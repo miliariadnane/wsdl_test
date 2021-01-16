@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        targetNamespace="http://ageservice/"
+        xmlns:tns="http://ageservice/"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        name="AgeService">
+    <!--    pour déclarer les complex type == equivalent au classe dans java    -->
+    <types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"  targetNamespace="http://ageservice/">
+            <xs:element name="getAge" type="tns:getAge"/>
+            <xs:element name="getAgeResponse" type="tns:getAgeResponse"/>
+            <!--  complex type ==  equivalent au attribut d'une classe   -->
+            <xs:complexType name="getAge">
+                <xs:sequence>
+                    <xs:element name="arg0" type="xs:int" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getAgeResponse">
+                <xs:sequence>
+                    <xs:element name="return" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </types>
+    <!--  message equivalent d'un parametre pour passer au opération  -->
+    <message name="getAge">
+        <part name="parameters" element="tns:getAge"/>
+    </message>
+    <message name="getAgeResponse">
+        <part name="parameters" element="tns:getAgeResponse"/>
+    </message>
+    <!--  portType la déclaration effective des opérations  -->
+    <portType name="AgeService">
+        <operation name="getAge">
+            <input message="tns:getAge"/>
+            <output message="tns:getAgeResponse"/>
+        </operation>
+    </portType>
+    <!-- binding pour appeler les operations et sont structures -->
+    <binding name="AgeServicePortBinding" type="tns:AgeService">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="getAge">
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <!-- indiquer l URL du service -->
+    <service name="getAge">
+        <port name="AgeServicePort" binding="tns:AgeServicePortBinding">
+            <soap:address location="http://localhost:8080/Age/getAge"/>
+        </port>
+    </service>
+</definitions>
